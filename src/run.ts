@@ -46,7 +46,7 @@ async function dispatch(job: Job, options: RunOptions): Promise<Result> {
     case "word-to-pdf":
       return unavailable()
     case "background-remover":
-      return unavailable()
+      return failure("Background remover is not in this slice yet.")
     default: {
       const unreachable: never = job
       return failure(`This tool is not available: ${unreachable}`)

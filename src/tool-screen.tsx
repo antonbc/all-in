@@ -32,6 +32,17 @@ export function ToolScreen({
   const inputId = useId()
   const running = state.phase.kind === "running"
   const ready = canRun(tool, state)
+  if (tool === "background-remover") {
+    return (
+      <main className="screen">
+        <button type="button" className="text-button" onClick={onHome}>
+          All tools
+        </button>
+        <h1>Background remover</h1>
+        <p>Background remover is not in this slice yet.</p>
+      </main>
+    )
+  }
   return (
     <main className="screen">
       <button type="button" className="text-button" onClick={onHome}>
