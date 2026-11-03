@@ -8,6 +8,7 @@ import {
   type Result,
   type RunOptions,
 } from "./domain.ts"
+import { wordToPdf } from "./word/to-pdf.ts"
 
 export async function run(job: Job, options: RunOptions = {}): Promise<Result> {
   try {
@@ -44,7 +45,7 @@ async function dispatch(job: Job, options: RunOptions): Promise<Result> {
     case "pdf-to-word":
       return unavailable()
     case "word-to-pdf":
-      return unavailable()
+      return wordToPdf(job.docx, job.pageSize, options)
     case "background-remover":
       return unavailable()
     default: {
