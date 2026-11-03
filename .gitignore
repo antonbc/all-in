@@ -1,0 +1,42 @@
+node_modules
+dist
+*.local
+
+# Secrets. .env.example is the only env file that may be committed, and only with placeholders.
+.env
+.env.*
+!.env.example
+
+# Private keys and credential files.
+*.pem
+*.key
+*.p12
+*.pfx
+*.ppk
+*.jks
+*.keystore
+id_rsa
+id_rsa.*
+id_dsa
+id_dsa.*
+id_ecdsa
+id_ecdsa.*
+id_ed25519
+id_ed25519.*
+credentials.json
+**/credentials.json
+
+# Editor junk.
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace

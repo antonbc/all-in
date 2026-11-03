@@ -1,0 +1,24 @@
+#!/bin/sh
+# Lint the commit message. Reject AI co-author trailers for Cursor and Grok.
+
+msg_file=$1
+
+if [ -z "$msg_file" ] || [ ! -f "$msg_file" ]; then
+  echo "commit-msg: message file missing" >&2
+  exit 1
+fi
+
+if grep -Ei '^[[:space:]]*Co-authored-by:.*(cursor|grok)' "$msg_file" >/dev/null; then
+  echo "commit-msg: do not add a Co-authored-by trailer naming Cursor or Grok." >&2
+  exit 1
+fi
+
+root=$(git rev-parse --show-toplevel) || exit 1
+commitlint="$root/node_modules/.bin/commitlint"
+
+if [ ! -x "$commitlint" ]; then
+  echo "commit-msg: commitlint is not installed. Run npm ci, then commit again." >&2
+  exit 1
+fi
+
+exec "$commitlint" --edit "$msg_file"
