@@ -37,7 +37,7 @@ async function dispatch(job: Job, options: RunOptions): Promise<Result> {
     case "png-to-pdf":
       return unavailable()
     case "jpeg-to-pdf":
-      return unavailable()
+      return imagesToPdf(job.images, job.pageSize, "jpeg", options)
     case "pdf-to-png":
       return unavailable()
     case "pdf-to-jpeg":
