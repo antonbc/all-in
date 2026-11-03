@@ -64,6 +64,62 @@ test("two PDF pages download a zip of JPEGs in order", async () => {
   assert.deepEqual(Object.keys(entries), ["page-1.jpg", "page-2.jpg"])
 })
 
+test("PDF to PNG yields each finished page before the job ends", async () => {
+  const yielded: Uint8Array[] = []
+  let ended = false
+  const result = await run(
+    {
+      tool: "pdf-to-png",
+      pdf: {
+        name: "pages.pdf",
+        bytes: await pdfPages([
+          { width: 200, height: 100 },
+          { width: 100, height: 200 },
+        ]),
+      },
+    },
+    {
+      onProgress: (progress) => {
+        assert.equal(ended, false)
+        if (progress.page === undefined) return
+        yielded.push(progress.page)
+      },
+    },
+  )
+  ended = true
+  assert.equal(result.ok, true)
+  if (!result.ok) return
+  const entries = zipEntries(result.file)
+  assert.equal(yielded.length, 2)
+  assert.deepEqual(yielded[0], entries["page-1.png"])
+  assert.deepEqual(yielded[1], entries["page-2.png"])
+})
+
+test("PDF to JPEG yields each finished page before the job ends", async () => {
+  const yielded: Uint8Array[] = []
+  let ended = false
+  const result = await run(
+    {
+      tool: "pdf-to-jpeg",
+      pdf: { name: "pages.pdf", bytes: await blankPages(2) },
+    },
+    {
+      onProgress: (progress) => {
+        assert.equal(ended, false)
+        if (progress.page === undefined) return
+        yielded.push(progress.page)
+      },
+    },
+  )
+  ended = true
+  assert.equal(result.ok, true)
+  if (!result.ok) return
+  const entries = zipEntries(result.file)
+  assert.equal(yielded.length, 2)
+  assert.deepEqual(yielded[0], entries["page-1.jpg"])
+  assert.deepEqual(yielded[1], entries["page-2.jpg"])
+})
+
 test("a PDF over 100 pages is refused before a render", async () => {
   const result = await run({
     tool: "pdf-to-png",

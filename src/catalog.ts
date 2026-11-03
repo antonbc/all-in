@@ -175,9 +175,14 @@ export type AddedFile = {
   pageCount?: number
 }
 
+export type RunningPage = {
+  bytes: Uint8Array
+  mediaType: string
+}
+
 export type Phase =
   | { kind: "ready" }
-  | { kind: "running"; completed: number; total: number }
+  | { kind: "running"; completed: number; total: number; pages: RunningPage[] }
   | { kind: "done"; result: Success }
   | { kind: "failed"; message: string }
 

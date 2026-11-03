@@ -10,7 +10,7 @@ import type { PageSize, Success } from "./domain.ts"
 import { download } from "./download.ts"
 import { formatSize } from "./format.ts"
 import { takeFiles } from "./intake.ts"
-import { Preview } from "./preview.tsx"
+import { PageImages, Preview } from "./preview.tsx"
 import { SplitPages } from "./split-pages.tsx"
 
 export function ToolScreen({
@@ -190,12 +190,15 @@ export function ToolScreen({
       </div>
       {!ready && !running && <p className="hint">{hint(tool, state)}</p>}
       {state.phase.kind === "running" && (
-        <div className="progress" role="status">
-          <progress value={state.phase.completed} max={Math.max(state.phase.total, 1)} />
-          <p>
-            Working… {state.phase.completed} of {state.phase.total}
-          </p>
-        </div>
+        <>
+          <div className="progress" role="status">
+            <progress value={state.phase.completed} max={Math.max(state.phase.total, 1)} />
+            <p>
+              Working… {state.phase.completed} of {state.phase.total}
+            </p>
+          </div>
+          {state.phase.pages.length > 0 && <PageImages pages={state.phase.pages} />}
+        </>
       )}
       {state.phase.kind === "failed" && (
         <p role="alert" className="messages">

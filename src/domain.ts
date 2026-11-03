@@ -38,6 +38,7 @@ export type Result = Success | Failure
 export type Progress = {
   completed: number
   total: number
+  page?: Uint8Array
 }
 
 export type RunOptions = {

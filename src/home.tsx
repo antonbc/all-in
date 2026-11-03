@@ -4,7 +4,7 @@ export function Home({ onOpen }: { onOpen: (tool: ToolId) => void }) {
   return (
     <main className="screen">
       <h1>Free tools</h1>
-      <p className="lede">Your files stay in this tab. Nothing is uploaded, saved, or tracked.</p>
+      <p className="lede">Your files stay in this tab.</p>
       {GROUPS.map((group) => (
         <section key={group} className="group">
           <h2>{group}</h2>

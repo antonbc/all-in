@@ -32,8 +32,9 @@ export async function pdfToImages(file: NamedBytes, format: Format, options: Run
     for (let pageNumber = 1; pageNumber <= total; pageNumber += 1) {
       if (isCanceled(options.signal)) return failure(CANCELED_MESSAGE)
       const page = await pdf.getPage(pageNumber)
-      images.push(await renderPage(page, format))
-      options.onProgress?.({ completed: pageNumber, total })
+      const rendered = await renderPage(page, format)
+      images.push(rendered)
+      options.onProgress?.({ completed: pageNumber, total, page: rendered })
       if (isCanceled(options.signal)) return failure(CANCELED_MESSAGE)
     }
     if (images.length === 1) {

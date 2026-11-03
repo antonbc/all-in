@@ -92,6 +92,16 @@ function PdfPage({ pdf, pageNumber }: { pdf: PDFDocumentProxy; pageNumber: numbe
   )
 }
 
+export function PageImages({ pages }: { pages: { bytes: Uint8Array; mediaType: string }[] }) {
+  return (
+    <div className="preview">
+      {pages.map((page, index) => (
+        <NamedImage key={index + 1} name={`Page ${index + 1}`} bytes={page.bytes} mediaType={page.mediaType} />
+      ))}
+    </div>
+  )
+}
+
 function ImagePreview({ bytes, mediaType, name }: { bytes: Uint8Array; mediaType: string; name: string }) {
   const url = useObjectUrl(bytes, mediaType)
   if (!url) return null

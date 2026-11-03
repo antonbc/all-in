@@ -91,7 +91,7 @@ test("columns, comments, and tracked changes are named and left out of the body"
   if (!result.ok) return
   const text = (await pdfText(result.file)).join("\n")
   assert.match(text, /Visible body/)
-  assert.match(text, /kept/)
+  assert.doesNotMatch(text, /kept/)
   assert.doesNotMatch(text, /gone/)
   assert.doesNotMatch(text, /Secret comment/)
   assert.match(result.notice ?? "", /Columns/)

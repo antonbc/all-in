@@ -238,11 +238,10 @@ function plainText(node: unknown, flags: Flags): string {
       flags.textBoxes = true
       continue
     }
-    if (key === "del" || key === "delText") {
+    if (key === "del" || key === "delText" || key === "ins") {
       flags.trackedChanges = true
       continue
     }
-    if (key === "ins") flags.trackedChanges = true
     if (key === "commentReference" || key === "commentRangeStart" || key === "commentRangeEnd") {
       flags.comments = true
       continue

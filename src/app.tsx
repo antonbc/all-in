@@ -62,7 +62,7 @@ export function App() {
     aborts.current.set(tool, controller)
     setJobs((current) => ({
       ...current,
-      [tool]: { ...current[tool], phase: { kind: "running", completed: 0, total: 1 } },
+      [tool]: { ...current[tool], phase: { kind: "running", completed: 0, total: 1, pages: [] } },
     }))
     void run(job, {
       signal: controller.signal,
@@ -71,7 +71,18 @@ export function App() {
         setJobs((current) => {
           const existing = current[tool]
           if (existing.phase.kind !== "running") return current
-          return { ...current, [tool]: { ...existing, phase: { kind: "running", ...progress } } }
+          const mediaType = imageMedia(tool)
+          const pages =
+            progress.page && mediaType
+              ? [...existing.phase.pages, { bytes: progress.page, mediaType }]
+              : existing.phase.pages
+          return {
+            ...current,
+            [tool]: {
+              ...existing,
+              phase: { kind: "running", completed: progress.completed, total: progress.total, pages },
+            },
+          }
         })
       },
     }).then((result) => {
@@ -109,6 +120,12 @@ export function App() {
       onCancel={() => cancel(active)}
     />
   )
+}
+
+function imageMedia(tool: ToolId): "image/png" | "image/jpeg" | undefined {
+  if (tool === "pdf-to-png") return "image/png"
+  if (tool === "pdf-to-jpeg") return "image/jpeg"
+  return undefined
 }
 
 function readHash(): ToolId | null {
