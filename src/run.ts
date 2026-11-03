@@ -8,6 +8,7 @@ import {
   type Result,
   type RunOptions,
 } from "./domain.ts"
+import { rotatePdf } from "./pdf/rotate.ts"
 
 export async function run(job: Job, options: RunOptions = {}): Promise<Result> {
   try {
@@ -30,7 +31,7 @@ async function dispatch(job: Job, options: RunOptions): Promise<Result> {
     case "split-pdf":
       return unavailable()
     case "rotate-pdf":
-      return unavailable()
+      return rotatePdf(job.pdf, job.turn, options)
     case "images-to-pdf":
       return unavailable()
     case "png-to-pdf":
