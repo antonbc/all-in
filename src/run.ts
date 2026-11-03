@@ -8,6 +8,7 @@ import {
   type Result,
   type RunOptions,
 } from "./domain.ts"
+import { splitPdf } from "./pdf/split.ts"
 
 export async function run(job: Job, options: RunOptions = {}): Promise<Result> {
   try {
@@ -28,7 +29,7 @@ async function dispatch(job: Job, options: RunOptions): Promise<Result> {
     case "merge":
       return unavailable()
     case "split-pdf":
-      return unavailable()
+      return splitPdf(job.pdf, job.pages, options)
     case "rotate-pdf":
       return unavailable()
     case "images-to-pdf":
