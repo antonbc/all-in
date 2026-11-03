@@ -1,3 +1,4 @@
+import { mergePdfs } from "./pdf/merge.ts"
 import {
   CANCELED_MESSAGE,
   failure,
@@ -26,7 +27,7 @@ async function dispatch(job: Job, options: RunOptions): Promise<Result> {
   if (isCanceled(options.signal)) return failure(CANCELED_MESSAGE)
   switch (job.tool) {
     case "merge":
-      return unavailable()
+      return mergePdfs(job.pdfs, options)
     case "split-pdf":
       return unavailable()
     case "rotate-pdf":
